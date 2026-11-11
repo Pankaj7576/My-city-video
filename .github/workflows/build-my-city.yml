@@ -35,7 +35,7 @@ jobs:
       - name: Install Blender, FFmpeg and audio dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y blender ffmpeg espeak-ng python3-numpy libegl1 libgl1 libglx-mesa0
+          sudo apt-get install -y blender ffmpeg espeak-ng python3-numpy libegl1 libgl1 libglx-mesa0 libegl1 libgl1 libglx-mesa0
 
       - name: Generate free Hindi dialogue, music and sound effects
         run: python3 scripts/generate_audio_assets.py
