@@ -18,7 +18,8 @@ All generated geometry is placeholder art and can be replaced later.
 SEED = 27
 random.seed(SEED)
 scene = bpy.context.scene
-scene.render.engine = "BLENDER_EEVEE_NEXT"
+available_engines = {item.identifier for item in scene.render.bl_rna.properties["engine"].enum_items}
+scene.render.engine = "BLENDER_EEVEE_NEXT" if "BLENDER_EEVEE_NEXT" in available_engines else "BLENDER_EEVEE"
 scene.render.resolution_x = 3840
 scene.render.resolution_y = 2160
 scene.render.resolution_percentage = 100
