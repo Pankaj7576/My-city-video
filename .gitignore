@@ -1,0 +1,21 @@
+# Blender backups and temporary files
+*.blend1
+*.blend@
+*.tmp
+*.log
+
+# Render output and caches
+/output/*
+!/output/.gitkeep
+*.mp4
+*.mov
+*.mkv
+*.wav
+*.mp3
+*.cache
+/cache/
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
