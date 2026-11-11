@@ -56,10 +56,10 @@ blender --background my_city_project.blend --python scripts/import_dialogues_vse
 
 For a single Blender session, open Blender and run those scripts in that order from the Scripting workspace. If scene_setup and camera_move are run in separate background invocations, save a .blend file between steps or use the combined command below.
 
-### One-session pipeline (recommended)
+### Manual one-session pipeline (alternative)
 
 ```bash
-blender --background --python-expr "exec(compile(open('scripts/scene_setup.py', encoding='utf-8').read(), 'scripts/scene_setup.py', 'exec')); exec(compile(open('scripts/camera_move.py', encoding='utf-8').read(), 'scripts/camera_move.py', 'exec')); exec(compile(open('scripts/render_config.py', encoding='utf-8').read(), 'scripts/render_config.py', 'exec')); bpy.ops.wm.save_as_mainfile(filepath='my_city_project.blend')"
+blender --background --python-expr "exec(compile(open('scripts/scene_setup.py', encoding='utf-8').read(), 'scripts/scene_setup.py', 'exec')); exec(compile(open('scripts/build_rigged_characters.py', encoding='utf-8').read(), 'scripts/build_rigged_characters.py', 'exec')); exec(compile(open('scripts/camera_move.py', encoding='utf-8').read(), 'scripts/camera_move.py', 'exec')); exec(compile(open('scripts/render_config.py', encoding='utf-8').read(), 'scripts/render_config.py', 'exec')); bpy.ops.wm.save_as_mainfile(filepath='my_city_project.blend')"
 ```
 
 Then render the saved project:
