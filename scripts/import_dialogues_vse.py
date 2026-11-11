@@ -9,7 +9,7 @@ with clear warnings; the script never creates fake/silent dialogue.
 from pathlib import Path
 import bpy
 
-ROOT = Path(bpy.path.abspath("//"))
+ROOT = Path(__file__).resolve().parents[1]
 AUDIO_ROOT = ROOT / "assets" / "audio"
 
 # Frame positions are 30 fps, timeline starts at frame 0.
