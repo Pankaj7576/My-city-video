@@ -1,0 +1,68 @@
+name: Build and render My City 3D film
+
+on:
+  workflow_dispatch:
+    inputs:
+      render_mode:
+        description: "Render mode"
+        required: true
+        type: choice
+        options:
+          - full_4k
+          - preview_1080p
+        default: preview_1080p
+  push:
+    branches: [main]
+    paths:
+      - "scripts/**"
+      - ".github/workflows/build-my-city.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: my-city-render
+  cancel-in-progress: false
+
+jobs:
+  build-and-render:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    steps:
+      - name: Check out project
+        uses: actions/checkout@v4
+
+      - name: Install Blender, FFmpeg and audio dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y blender ffmpeg espeak-ng python3-numpy
+
+      - name: Generate free Hindi dialogue, music and sound effects
+        run: python3 scripts/generate_audio_assets.py
+
+      - name: Build Blender scene and rigged characters
+        run: blender --background --python scripts/build_project.py
+
+      - name: Select render settings
+        shell: bash
+        run: |
+          MODE="${{ github.event.inputs.render_mode || 'preview_1080p' }}"
+          if [ "$MODE" = "full_4k" ]; then
+            blender --background my_city_project.blend --python-expr "import bpy; s=bpy.context.scene; s.render.resolution_x=3840; s.render.resolution_y=2160; s.render.resolution_percentage=100; s.frame_start=1; s.frame_end=9000; s.render.fps=30; s.render.image_settings.file_format='FFMPEG'; s.render.ffmpeg.format='MPEG4'; s.render.ffmpeg.codec='H264'; s.render.filepath='output/my_city_final.mp4'; bpy.ops.wm.save_as_mainfile(filepath='my_city_project.blend')"
+          else
+            blender --background my_city_project.blend --python-expr "import bpy; s=bpy.context.scene; s.render.resolution_x=1920; s.render.resolution_y=1080; s.render.resolution_percentage=100; s.frame_start=1; s.frame_end=450; s.render.fps=30; s.render.image_settings.file_format='FFMPEG'; s.render.ffmpeg.format='MPEG4'; s.render.ffmpeg.codec='H264'; s.render.filepath='output/my_city_preview.mp4'; bpy.ops.wm.save_as_mainfile(filepath='my_city_project.blend')"
+          fi
+
+      - name: Render animation
+        run: blender --background my_city_project.blend --render-anim
+
+      - name: Upload rendered MP4 and editable Blender project
+        uses: actions/upload-artifact@v4
+        with:
+          name: my-city-${{ github.event.inputs.render_mode || 'preview_1080p' }}
+          path: |
+            output/*.mp4
+            my_city_project.blend
+            assets/characters/my_city_rigged_characters.blend
+          if-no-files-found: error
+          retention-days: 30
