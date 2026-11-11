@@ -9,7 +9,13 @@ with clear warnings; the script never creates fake/silent dialogue.
 from pathlib import Path
 import bpy
 
-ROOT = Path(__file__).resolve().parents[1]
+# Resolve the repository root robustly when this script is launched via runpy
+# after another Blender script has saved an intermediate .blend file.
+_candidates = [Path.cwd(), Path(__file__).resolve().parents[1]]
+if bpy.data.filepath:
+    _blend_path = Path(bpy.data.filepath).resolve()
+    _candidates.extend([_blend_path.parent, _blend_path.parent.parent])
+ROOT = next((p for p in _candidates if (p / "assets" / "audio").is_dir()), Path.cwd())
 AUDIO_ROOT = ROOT / "assets" / "audio"
 
 # Frame positions are 30 fps, timeline starts at frame 0.
