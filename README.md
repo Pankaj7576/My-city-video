@@ -1,28 +1,86 @@
-# MY CITY VIDEO
+# My-city-video — asset and render workflow
 
-A Blender-based cinematic 3D video project.
+## Folder structure
 
-## Current setup
-- Aspect ratio: 16:9
-- Resolution: 3840 × 2160 (4K)
-- Frame rate: 30 FPS
-- Main characters: Aarav and Maya (visual designs/story details pending)
-- Environment: large procedural city foundation
+```text
+My-city-video/
+├── README.md
+├── .gitignore
+├── assets/
+│   ├── characters/
+│   │   ├── aarav_base.blend
+│   │   ├── maya_base.blend
+│   │   └── README.md
+│   ├── animations/
+│   │   ├── run_cycle.fbx
+│   │   ├── interaction.fbx
+│   │   └── README.md
+│   ├── city_models/
+│   │   └── README.md
+│   ├── textures/
+│   │   └── README.md
+│   └── audio/
+│       ├── dialogues/
+│       ├── sfx/
+│       └── AUDIO_CUE_SHEET.md
+├── scripts/
+│   ├── scene_setup.py
+│   ├── camera_move.py
+│   ├── render_config.py
+│   ├── create_character_assets.py
+│   ├── create_animation_assets.py
+│   └── setup_visual_placeholders.py
+└── output/
+    └── .gitkeep
+```
 
-## Folder layout
-- `assets/characters/` — character models
-- `assets/city_models/` — city models and props
-- `assets/textures/` — materials and textures
-- `scripts/` — Blender Python setup and animation scripts
-- `output/` — rendered video output
+## File naming
 
-## Run in Blender
-Open Blender, switch to the Scripting workspace, load and run:
-1. `scripts/scene_setup.py`
-2. `scripts/camera_move.py`
-3. `scripts/render_config.py`
+- Characters: `aarav_base.blend`, `maya_base.blend`; later use versioned names such as `aarav_v002.blend`.
+- Animation FBX: `run_cycle.fbx`, `interaction.fbx`; keep action names and armature bone names consistent.
+- Audio: `maya_comms_guide.wav`, `aarav_server_guide.wav`, `city_ambience.wav`, `siren_short.wav`.
+- Textures: lowercase snake_case and include resolution when useful, e.g. `tower_glass_4k_basecolor.png`.
+- Renders: `my_city_preview_####.png`, `my_city_final.mp4`.
 
-The city is a procedural starting environment. Final character designs, story scenes, dialogue, sound, and shot timing will be added after the complete story prompt is supplied.
+## Blender run order
 
-## Render
-The render script configures 4K, 16:9, 30 FPS and an MP4/H.264 output in `output/`. Rendering requires Blender on a computer with sufficient memory and storage.
+From the repository root:
+
+```bash
+blender --background --python scripts/scene_setup.py
+blender --background --python scripts/camera_move.py
+blender --background --python scripts/render_config.py
+```
+
+For a single Blender session, open Blender and run those scripts in that order from the Scripting workspace. If scene_setup and camera_move are run in separate background invocations, save a .blend file between steps or use the combined command below.
+
+### One-session pipeline (recommended)
+
+```bash
+blender --background --python-expr "exec(compile(open('scripts/scene_setup.py', encoding='utf-8').read(), 'scripts/scene_setup.py', 'exec')); exec(compile(open('scripts/camera_move.py', encoding='utf-8').read(), 'scripts/camera_move.py', 'exec')); exec(compile(open('scripts/render_config.py', encoding='utf-8').read(), 'scripts/render_config.py', 'exec')); bpy.ops.wm.save_as_mainfile(filepath='my_city_project.blend')"
+```
+
+Then render the saved project:
+
+```bash
+blender -b my_city_project.blend -a
+```
+
+## Importing final characters
+
+1. Open the final rigged .blend or FBX from Blender's File > Import menu.
+2. Keep character forward direction consistent (the project uses +Y as the street depth axis and Z up; check the imported model orientation).
+3. Place the character root at the blockout root position, then align scale to roughly 1.8–2.0 Blender units tall.
+4. Retarget run_cycle and interaction to the final armature using a compatible retargeting workflow/add-on. Confirm bone naming and rest pose first.
+5. Replace the blockout objects only after the final rig and animation have been checked in the chase and climax shots.
+
+## Git and GitHub notes
+
+- Commit Python scripts, Markdown, small original textures, and project configuration.
+- Blender .blend files and FBX files are binary assets; Git LFS is recommended as they grow.
+- Avoid committing rendered 4K MP4s, caches, temporary renders, and Blender backup files to ordinary Git.
+- Never commit copyrighted audio or assets unless you have the rights to use them.
+
+## Current limitations
+
+The Python scripts generate a procedural starting environment and temporary props. They do not create finished human-quality character rigs, final acting, lip-sync, dialogue recordings, or a polished final render. Run and inspect the scripts in your installed Blender version before treating the scene as production-ready.
