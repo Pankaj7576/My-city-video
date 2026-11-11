@@ -74,10 +74,10 @@ DIALOGUES = [
 
 # Optional beds/effects. They are imported only when the matching file exists.
 OPTIONAL_AUDIO = [
-    {"name": "MUSIC_OPENING_TENSION", "file": "music_opening_tension.wav", "frame": 0, "channel": 4, "volume": 0.22, "fade_in": 45, "fade_out": 60},
-    {"name": "MUSIC_CITY_CHASE", "file": "music_city_chase.wav", "frame": 1800, "channel": 4, "volume": 0.20, "fade_in": 45, "fade_out": 60},
-    {"name": "MUSIC_CLIMAX", "file": "music_climax.wav", "frame": 5700, "channel": 4, "volume": 0.24, "fade_in": 30, "fade_out": 45},
-    {"name": "MUSIC_OUTRO", "file": "music_rooftop_outro.wav", "frame": 8550, "channel": 4, "volume": 0.18, "fade_in": 45, "fade_out": 60},
+    {"name": "MUSIC_OPENING_TENSION", "file": "music_opening_tension.mp3", "frame": 0, "channel": 4, "volume": 0.22, "fade_in": 45, "fade_out": 60},
+    {"name": "MUSIC_CITY_CHASE", "file": "music_city_chase.mp3", "frame": 1800, "channel": 4, "volume": 0.20, "fade_in": 45, "fade_out": 60},
+    {"name": "MUSIC_CLIMAX", "file": "music_climax.mp3", "frame": 5700, "channel": 4, "volume": 0.24, "fade_in": 30, "fade_out": 45},
+    {"name": "MUSIC_OUTRO", "file": "music_rooftop_outro.mp3", "frame": 8550, "channel": 4, "volume": 0.18, "fade_in": 45, "fade_out": 60},
     {"name": "SFX_ALERT_PULSE", "file": "sfx_alert_pulse.wav", "frame": 0, "channel": 3, "volume": 0.55, "fade_in": 2, "fade_out": 15},
     {"name": "SFX_CITY_AMBIENCE", "file": "sfx_city_ambience.wav", "frame": 150, "channel": 5, "volume": 0.30, "fade_in": 45, "fade_out": 45},
     {"name": "SFX_RUNNING_FOOTSTEPS", "file": "sfx_running_footsteps.wav", "frame": 1800, "channel": 3, "volume": 0.45, "fade_in": 8, "fade_out": 20},
