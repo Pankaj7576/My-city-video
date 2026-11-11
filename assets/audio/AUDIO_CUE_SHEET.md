@@ -1,29 +1,44 @@
-# MY CITY VIDEO — temporary audio / VSE cue sheet
+# MY CITY VIDEO — final audio cue sheet
 
-Project timing: 5:00 | 30 FPS | 16:9 landscape | 4K UHD
+Project format: 16:9 | 4K UHD | 30 FPS | 5:00
+Timeline: frame 0 through 8999 (exactly 9000 frames / 300 seconds).
 
-This is a cue sheet only. No copyrighted music, recorded voices, or sound files are bundled.
-Add temporary guide recordings in Blender Video Sequence Editor (VSE), then replace them with approved final audio.
+## Dialogue cues
 
-| Time | Frames | Track / cue | Temporary guide |
-|---|---:|---|---|
-| 00:00–00:05 | 1–150 | Alert intro | Low suspense drone + soft warning pulse |
-| 00:05–01:00 | 151–1800 | Mega-city aerial | City ambience, distant traffic, Maya communication guide |
-| 01:00–03:00 | 1801–5400 | Market sequence | Footsteps, market ambience, traffic bed |
-| 03:10–04:00 | 5700–7200 | Server / USB close-up | Quiet electronic interface tones; insertion cue at frame 5850 |
-| 04:00–04:45 | 7201–8550 | Green wave resolution | Rising synthetic tone, then gentle release |
-| 04:45–05:00 | 8551–9000 | Rooftop ending | Calm ambience and end-credit cue |
+| File | Start frame | Channel | Speaker | Dialogue |
+|---|---:|---:|---|---|
+| `dialogues/aarav_hook_alert.mp3` | 0 | 1 | Aarav | सिस्टम पूरी तरह लॉक होने में बस 5 मिनट बाकी हैं! |
+| `dialogues/maya_comm_start.mp3` | 180 | 2 | Maya | आरव, सेंट्रल ग्रिड का फायरवॉल ब्रीच हो रहा है। जल्दी करो! |
+| `dialogues/aarav_running_action.mp3` | 1900 | 1 | Aarav | मैं मेन सर्वर टावर के पास पहुँच रहा हूँ, माया बैकअप संभालो! |
+| `dialogues/maya_climax_countdown.mp3` | 6400 | 2 | Maya | बस 10 सेकंड बचे हैं आरव, पेनड्राइव कनेक्ट करो! |
+| `dialogues/aarav_maya_outro.mp3` | 8600 | 1 | Aarav + Maya | मिशन सक्सेसफुल। |
 
-## Dialogue recording placeholders
-- Maya: record a temporary guide line for the city communication beat.
-- Aarav: record a temporary guide line for the server-tower beat.
-- Final dialogue wording and exact lip-sync timing are pending the approved script.
+## Optional music beds
 
-## VSE workflow
-1. Open Blender's Video Editing workspace.
-2. Add temporary WAV guide tracks on separate channels: dialogue, ambience, effects, music.
-3. Align dialogue starts to the scene markers above.
-4. Keep effects and music on separate channels so they can be mixed independently.
-5. Replace guide tracks with licensed/original final audio before final export.
+Place these files directly in `assets/audio/`:
 
-No actual audio clips are included yet; the folders under assets/audio/dialogues and assets/audio/sfx are ready for them.
+| File | Start frame | Channel | Suggested level |
+|---|---:|---:|---:|
+| `music_opening_tension.wav` | 0 | 4 | 0.22 |
+| `music_city_chase.wav` | 1800 | 4 | 0.20 |
+| `music_climax.wav` | 5700 | 4 | 0.24 |
+| `music_rooftop_outro.wav` | 8550 | 4 | 0.18 |
+
+## Optional sound effects
+
+Place these files in `assets/audio/sfx/`:
+
+| File | Start frame | Channel |
+|---|---:|---:|
+| `sfx_alert_pulse.wav` | 0 | 3 |
+| `sfx_city_ambience.wav` | 150 | 5 |
+| `sfx_running_footsteps.wav` | 1800 | 3 |
+| `sfx_server_usb_connect.wav` | 6400 | 3 |
+| `sfx_system_recovery.wav` | 6600 | 3 |
+
+## Automated application
+
+Run `blender --background my_city_project.blend --python scripts/import_dialogues_vse.py`.
+The script imports whichever audio files exist, places them on the assigned channels, applies short fades, creates editorial markers, and reports missing clips. It removes only strips with the managed `DIALOGUE_`, `MUSIC_`, and `SFX_` prefixes before rebuilding, preserving unrelated VSE tracks.
+
+**Asset status:** this repository currently contains the cue sheet and importer only. No dialogue recordings, music, or effects are embedded yet. Do not treat missing audio as silence or as completed sound design. Use original/generated or properly licensed audio.
