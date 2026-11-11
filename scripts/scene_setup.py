@@ -202,6 +202,13 @@ def make_character(name, x, y, jacket):
 
 aarav = make_character("AARAV_BLOCKOUT", -3.0, -4.0, AARAV_JACKET)
 maya = make_character("MAYA_BLOCKOUT", 3.0, -4.0, MAYA_JACKET)
+# Simple placeholder travel path for the chase blocking; replace with rigged acting later.
+for frame, loc in [(1801,(-3.0,-4.0,0.0)), (2700,(-35.0,45.0,0.0)), (3900,(-90.0,92.0,0.0)), (5100,(-110.0,110.0,0.0))]:
+    aarav.location = loc
+    aarav.keyframe_insert(data_path="location", frame=frame)
+for frame, loc in [(1801,(3.0,-4.0,0.0)), (2700,(-30.0,48.0,0.0)), (3900,(-86.0,96.0,0.0)), (5100,(-106.0,113.0,0.0))]:
+    maya.location = loc
+    maya.keyframe_insert(data_path="location", frame=frame)
 
 # Maya wrist device and hologram panel.
 cube("Maya Wrist Device", (3.45,-4.1,1.55), (0.35,0.15,0.20), NEON_CYAN, PROPS, 0.04)
@@ -224,23 +231,21 @@ rack = cube("SERVER RACK", (0,210,5.0), (7.0,2.0,10.0), CONCRETE, PROPS, 0.25)
 for row in range(8):
     z = 1.2 + row*1.05
     cube(f"Server Rack Slot {row}", (0,208.92,z), (3.8,0.08,0.55), ASPHALT, PROPS, 0.035)
-status = cube("SERVER STATUS LIGHT", (2.35,208.82,8.6), (0.32,0.12,0.32), RED, PROPS, 0.05)
+status_mat = material("MC | Animated Server Status", (1.0,0.015,0.025), 0.0, 0.25, 4.0)
+status = cube("SERVER STATUS LIGHT", (2.35,208.82,8.6), (0.32,0.12,0.32), status_mat, PROPS, 0.05)
 usb = cube("USB PENDRIVE", (-1.5,205.5,4.3), (0.25,1.0,0.16), WHITE, PROPS, 0.04)
 usb.keyframe_insert(data_path="location", frame=6300)
 usb.location.y = 208.75
 usb.keyframe_insert(data_path="location", frame=6420)
-# Status light material swaps red -> green with animated emission strength.
-status.data.materials.clear()
-status.data.materials.append(RED)
-status.data.materials.append(GREEN)
-status.data.materials[0] = RED
-status.data.materials[1] = GREEN
-status.data.materials.clear()
-status.data.materials.append(RED)
-status.keyframe_insert(data_path="active_material_index", frame=6419)
-status.data.materials.append(GREEN)
-status.active_material_index = 1
-status.keyframe_insert(data_path="active_material_index", frame=6420)
+# Animate the same shader from alert red to recovery green.
+status_bsdf = status_mat.node_tree.nodes.get("Principled BSDF")
+for frame, color in [(6301,(1.0,0.015,0.025)), (6419,(1.0,0.015,0.025)), (6420,(0.015,1.0,0.12)), (9000,(0.015,1.0,0.12))]:
+    status_bsdf.inputs["Base Color"].default_value = (*color,1)
+    status_bsdf.inputs["Base Color"].keyframe_insert(data_path="default_value", frame=frame)
+    status_bsdf.inputs["Emission Color"].default_value = (*color,1)
+    status_bsdf.inputs["Emission Color"].keyframe_insert(data_path="default_value", frame=frame)
+    status_bsdf.inputs["Emission Strength"].default_value = 4.0
+    status_bsdf.inputs["Emission Strength"].keyframe_insert(data_path="default_value", frame=frame)
 
 # World and atmospheric city lighting.
 world = scene.world or bpy.data.worlds.new("MY CITY NIGHT WORLD")
