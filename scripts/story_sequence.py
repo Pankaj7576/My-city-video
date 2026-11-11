@@ -155,7 +155,7 @@ credit.rotation_euler = (math.radians(72), 0, 0)
 credit.hide_render = True
 credit.keyframe_insert(data_path="hide_render", frame=8549)
 credit.hide_render = False
-credit.keyframe_insert(data_path="hide_render", frame=8550)
+credit.keyframe_insert(data_path="hide_render", frame=8551)
 
 # Camera creation/reuse and cinematic 5-shot movement.
 camera = scene.camera
@@ -176,8 +176,8 @@ shots = [
     (1800, (75,-80,70), (0,35,20)),           # Fly-through
     (1801, (-18,15,5), (0,35,2)),             # Market chase
     (5400, (0,25,5), (0,78,18)),              # Server tower
-    (8100, (0,78,15), (0,78,25)),             # Climax hold
-    (8101, (0,-10,8), (0,0,1)),               # Quiet rooftop
+    (8550, (0,78,15), (0,78,25)),             # Climax hold ends at 4:45
+    (8551, (0,-10,8), (0,0,1)),               # Quiet rooftop
     (9000, (0,-18,24), (0,0,0)),              # Pan up to sky
 ]
 for frame, loc, target in shots:
@@ -195,7 +195,7 @@ if camera.animation_data and camera.animation_data.action:
 for name, frame in [
     ("SCENE 1 | HOOK",1), ("SCENE 2 | MEGA CITY OVERVIEW",151),
     ("SCENE 3 | MARKET CHASE",1801), ("SCENE 4 | SERVER TOWER CLIMAX",5400),
-    ("SCENE 5 | ROOFTOP ENDING",8101)
+    ("SCENE 5 | ROOFTOP ENDING",8551)
 ]:
     scene.timeline_markers.new(name, frame=frame)
 
