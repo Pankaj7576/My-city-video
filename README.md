@@ -29,7 +29,8 @@ My-city-video/
 │   ├── render_config.py
 │   ├── create_character_assets.py
 │   ├── create_animation_assets.py
-│   └── setup_visual_placeholders.py
+│   ├── setup_visual_placeholders.py
+│   └── generate_audio_assets.py
 └── output/
     └── .gitkeep
 ```
@@ -69,7 +70,7 @@ blender -b my_city_project.blend -a
 
 ## Audio assembly
 
-The VSE importer is `scripts/import_dialogues_vse.py`. Add the dialogue MP3s listed in `assets/audio/AUDIO_CUE_SHEET.md` to `assets/audio/dialogues/`; optional music beds go in `assets/audio/` and sound effects in `assets/audio/sfx/`. The importer applies available files to the VSE with assigned channels and fades, and reports any missing clips. It does not fabricate silent audio. Actual voice/music assets are not included until generated or supplied.
+The VSE importer is `scripts/import_dialogues_vse.py`. A GitHub Actions workflow (`.github/workflows/generate-audio-assets.yml`) runs `scripts/generate_audio_assets.py` using free eSpeak NG, FFmpeg and NumPy tools, then commits the generated Hindi dialogue MP3s, original synthesized music MP3s and sound-effect WAVs into `assets/audio/`. The dialogue voices are intentionally simple draft TTS (Aarav lower-pitched, Maya higher-pitched), not studio-quality voice acting. Once the workflow finishes, the importer places the generated files on the assigned VSE channels with fades.
 
 ## Importing final characters
 
