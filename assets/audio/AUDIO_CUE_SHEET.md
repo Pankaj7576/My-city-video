@@ -15,14 +15,14 @@ Timeline: frame 0 through 8999 (exactly 9000 frames / 300 seconds).
 
 ## Optional music beds
 
-Place these files directly in `assets/audio/`:
+The free audio-generation workflow creates these original instrumental files directly in `assets/audio/`:
 
 | File | Start frame | Channel | Suggested level |
 |---|---:|---:|---:|
-| `music_opening_tension.wav` | 0 | 4 | 0.22 |
-| `music_city_chase.wav` | 1800 | 4 | 0.20 |
-| `music_climax.wav` | 5700 | 4 | 0.24 |
-| `music_rooftop_outro.wav` | 8550 | 4 | 0.18 |
+| `music_opening_tension.mp3` | 0 | 4 | 0.22 |
+| `music_city_chase.mp3` | 1800 | 4 | 0.20 |
+| `music_climax.mp3` | 5700 | 4 | 0.24 |
+| `music_rooftop_outro.mp3` | 8550 | 4 | 0.18 |
 
 ## Optional sound effects
 
