@@ -72,7 +72,7 @@ blender -b my_city_project.blend -a
 
 The VSE importer is `scripts/import_dialogues_vse.py`. A GitHub Actions workflow (`.github/workflows/generate-audio-assets.yml`) runs `scripts/generate_audio_assets.py` using free eSpeak NG, FFmpeg and NumPy tools, then commits the generated Hindi dialogue MP3s, original synthesized music MP3s and sound-effect WAVs into `assets/audio/`. The dialogue voices are intentionally simple draft TTS (Aarav lower-pitched, Maya higher-pitched), not studio-quality voice acting. Once the workflow finishes, the importer places the generated files on the assigned VSE channels with fades.
 
-## Importing final characters
+## Procedural rigged character pass\n\nRun `scripts/build_rigged_characters.py` after `scene_setup.py`. It replaces the two blockout roots with stylized 3D Aarav and Maya models built from separate mesh parts, each weighted to named armature bones. The rigs include root, pelvis, spine, chest, neck, head, upper/lower arms, hands, thighs, shins and feet, plus reusable run-cycle and reach-gesture actions. The builder saves `assets/characters/my_city_rigged_characters.blend`. This is a rigged stylized production block-in; it is not a photorealistic sculpt or motion-capture performance.\n\n## Importing final characters
 
 1. Open the final rigged .blend or FBX from Blender's File > Import menu.
 2. Keep character forward direction consistent (the project uses +Y as the street depth axis and Z up; check the imported model orientation).
