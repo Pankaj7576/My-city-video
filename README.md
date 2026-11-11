@@ -50,6 +50,7 @@ From the repository root:
 blender --background --python scripts/scene_setup.py
 blender --background --python scripts/camera_move.py
 blender --background --python scripts/render_config.py
+blender --background my_city_project.blend --python scripts/import_dialogues_vse.py
 ```
 
 For a single Blender session, open Blender and run those scripts in that order from the Scripting workspace. If scene_setup and camera_move are run in separate background invocations, save a .blend file between steps or use the combined command below.
@@ -65,6 +66,10 @@ Then render the saved project:
 ```bash
 blender -b my_city_project.blend -a
 ```
+
+## Audio assembly
+
+The VSE importer is `scripts/import_dialogues_vse.py`. Add the dialogue MP3s listed in `assets/audio/AUDIO_CUE_SHEET.md` to `assets/audio/dialogues/`; optional music beds go in `assets/audio/` and sound effects in `assets/audio/sfx/`. The importer applies available files to the VSE with assigned channels and fades, and reports any missing clips. It does not fabricate silent audio. Actual voice/music assets are not included until generated or supplied.
 
 ## Importing final characters
 
