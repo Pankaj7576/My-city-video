@@ -1,4 +1,4 @@
-name: Generate free project audio assets
+name: Generate free project audio assets (free Hindi TTS + original score)
 
 on:
   push:
