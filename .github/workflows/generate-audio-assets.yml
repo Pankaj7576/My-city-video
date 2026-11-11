@@ -1,0 +1,36 @@
+name: Generate free project audio assets
+
+on:
+  push:
+    paths:
+      - ".github/workflows/generate-audio-assets.yml"
+      - "scripts/generate_audio_assets.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate-audio:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out project
+        uses: actions/checkout@v4
+      - name: Install free audio tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y espeak-ng ffmpeg python3-numpy
+      - name: Generate dialogue, music and effects
+        run: python3 scripts/generate_audio_assets.py
+      - name: Commit generated audio to the project
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/audio/dialogues/*.mp3 assets/audio/music_*.mp3 assets/audio/sfx/*.wav
+          if git diff --cached --quiet; then
+            echo "No audio changes to commit."
+          else
+            git commit -m "Generate free Hindi dialogue and original audio assets"
+            git push
+          fi
