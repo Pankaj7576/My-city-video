@@ -10,7 +10,7 @@ on:
         options:
           - full_4k
           - preview_1080p
-        default: preview_1080p
+        default: full_4k
   push:
     branches: [main]
     paths:
@@ -46,7 +46,7 @@ jobs:
       - name: Select render settings
         shell: bash
         run: |
-          MODE="${{ github.event.inputs.render_mode || 'preview_1080p' }}"
+          MODE="${{ github.event.inputs.render_mode || 'full_4k' }}"
           if [ "$MODE" = "full_4k" ]; then
             blender --background my_city_project.blend --python-expr "import bpy; s=bpy.context.scene; s.render.resolution_x=3840; s.render.resolution_y=2160; s.render.resolution_percentage=100; s.frame_start=1; s.frame_end=9000; s.render.fps=30; s.render.image_settings.file_format='FFMPEG'; s.render.ffmpeg.format='MPEG4'; s.render.ffmpeg.codec='H264'; s.render.filepath='output/my_city_final.mp4'; bpy.ops.wm.save_as_mainfile(filepath='my_city_project.blend')"
           else
